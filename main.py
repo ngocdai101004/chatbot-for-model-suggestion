@@ -33,7 +33,7 @@ def get_chain():
 # Example
 if __name__ == '__main__':
     conversation_chain = get_chain()
-    query = 'Give me 3 communities about Data'
+    query = input ("Enter your query: ")
     chat_history = [
         {
             'question': 'Hello',

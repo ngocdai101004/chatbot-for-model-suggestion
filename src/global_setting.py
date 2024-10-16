@@ -1,5 +1,5 @@
-FILE_PATHS = ['data/communities.csv']
+FILE_PATHS = ['data/models_information.csv']
 EMBEDDING_PATH = 'src/models/BAAI_bge-m3'
 RERANKER_PATH = 'src/models/BAAI_bge-reranker-base'
-LLM_PATH = 'src/models/Qwen_Qwen2-1.5B-Chat'
+LLM_PATH = 'src/models/Qwen_Qwen2.5-3B'
 BART_PATH = 'src/models/facebook_bart-large-mnli'
