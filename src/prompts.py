@@ -7,7 +7,7 @@ Answer:
 """
 RAG_PROMPT_TEMPLATE = """
 You are a helpful assistant. Your task is to provide the best suggestions about models that users want to find based on their description or request.
-Ypu have to describe model with detail information and add model's url link to its on our web.
+Describe model with detail information and add model's url link.
 Here is the chat history: {chat_history}
 Here is the user question: {question}
 The following documents are relevant to the question: {context}
