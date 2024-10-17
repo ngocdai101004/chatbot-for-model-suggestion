@@ -4,8 +4,9 @@ from langchain_core.runnables import RunnableParallel
 from langchain_core.output_parsers.string import StrOutputParser
 from operator import itemgetter
 from src.agents.query_classifier import query_classification
+from src.prompts import CANDIDATE_LABELS
 
-
+candidate_labels = CANDIDATE_LABELS
 class ChatbotChain():
     def __init__(self, llm, rag_prompt, general_prompt, compression_retriever, query_classifier):
         self.llm = llm
@@ -18,14 +19,13 @@ class ChatbotChain():
 
         self.rag_chain = (
             RunnableParallel(
-                question=lambda x: x["question"],
-                chat_history=lambda x: x["chat_history"],
+                question = lambda x: x["question"],
+                chat_history= lambda x: x["chat_history"],
             )
-            | RunnableParallel(
-                context=itemgetter(
-                    'question') | compression_retriever | format_docs,
-                chat_history=itemgetter('chat_history'),
-                question=itemgetter('question'))
+            |RunnableParallel(
+                  context = itemgetter ('question')| compression_retriever | format_docs,
+                  chat_history = itemgetter ('chat_history') ,
+                  question = itemgetter ('question'))
             | rag_prompt
             | llm
             | StrOutputParser()
@@ -54,30 +54,30 @@ class ChatbotChain():
         self.query_classifier = query_classifier
 
     def format_chat_history(self, chat_history):
-
         if chat_history is None or len(chat_history) == 0:
             return ""
-        else:
-            return "\n".join([f"User: {record['question']}\nAssistant: {record['answer']}" for record in chat_history])
+        else:   
+            return "\n".join([f"Question: {record['question']}\nAnswer: {record['answer']}\n" for record in chat_history])
+            
 
     def chat(self, message):
         query = message['question']
         chat_history = message['chat_history']
+        chat_history = chat_history[len(chat_history)-2:len(chat_history)] if len(chat_history) > 2 else chat_history
         history = self.format_chat_history(chat_history)
         if query == 'exit':
             print('Exiting')
             return 'Exiting'
         if query == '':
             return 'No query'
-        score = query_classification(
-            query=query, classifier=self.query_classifier)
-        print('Score: ', score)
-        if score >= 0.5:
-            output = self.rag_chain.invoke(
-                {"question": query, "chat_history": history})
+        clss = query_classification(query, self.query_classifier, candidate_labels=candidate_labels)
+        label = clss['labels'][0]
+
+        if label == candidate_labels[0]:
+            output = self.rag_chain.invoke({"question": query, "chat_history": history})
             response = output.split('Answer:')[-1]
         else:
-            output = self.general_chain.invoke(
-                {"question": query, "chat_history": history})
+            output = self.general_chain.invoke({"question": query, "chat_history": history})
             response = output.split('Answer:')[-1]
         return response
+

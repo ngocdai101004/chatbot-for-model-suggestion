@@ -13,5 +13,4 @@ def get_query_classifier(device='cpu'):
 
 def query_classification(query, classifier, candidate_labels=CANDIDATE_LABELS):
     clss = classifier(query, candidate_labels)
-    score = clss['scores'][0]
-    return score
+    return clss
