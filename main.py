@@ -33,22 +33,23 @@ def get_chain():
 # Example
 if __name__ == '__main__':
     conversation_chain = get_chain()
-    query = input ("Enter your query: ")
-    chat_history = [
-        {
-            'question': 'Hello',
-            'answer': 'Hello, What can I help you'
+    while True:
+        query = input ("Enter your query (enter 'exit' to exit): ")
+        chat_history = [
+            {
+                'question': 'Hello',
+                'answer': 'Hello, What can I help you'
+            }
+        ]
+        message = {
+            'question': query,
+            'chat_history': chat_history
         }
-    ]
-    message = {
-        'question': query,
-        'chat_history': chat_history
-    }
-    response = conversation_chain.chat(message)
-    chat_history.append({
-        'question': query,
-        'answer': response
-    })
-    print("------------------Response-------------------\n", response)
-    print("------------------History------------------- \n", len(chat_history))
-    print("---------------------------------------------")
+        response = conversation_chain.chat(message)
+        chat_history.append({
+            'question': query,
+            'answer': response
+        })
+        print("------------------Response-------------------\n", response)
+        print("------------------History------------------- \n", len(chat_history))
+        print("---------------------------------------------")

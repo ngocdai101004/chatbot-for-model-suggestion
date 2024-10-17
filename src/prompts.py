@@ -17,5 +17,5 @@ Answer:
 CANDIDATE_LABELS = [
     "requesting suggestions or expressing interest in artificial intelligence (ai), machine learning (ml), or deep learning (DL) models, techniques, or implementations, especially in the context of our forum.",
     "general chat, such as greetings, social or non-technical questions, or basic everyday inquiries",
-    "general inquiries about knowledge, theories, or concepts unrelated to models"
+    "general inquiries about knowledge, theories, or concepts unrelated to models",
 ]
