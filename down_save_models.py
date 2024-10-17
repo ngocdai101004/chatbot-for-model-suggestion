@@ -4,7 +4,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, AutoModel, AutoMod
 
 
 def down_save_automodel(name, dir):
-    model = AutoModel.from_pretrained(name)
+    model = AutoModel.from_pretrained(name, torch_dtype="auto")
     tokenizer = AutoTokenizer.from_pretrained(name)
     path = os.path.join(dir, name.replace('/', '_'))
     model.save_pretrained(path)
@@ -12,7 +12,7 @@ def down_save_automodel(name, dir):
 
 
 def down_save_automodel_for_llm(name, dir):
-    model = AutoModelForCausalLM.from_pretrained(name)
+    model = AutoModelForCausalLM.from_pretrained(name, torch_dtype="auto")
     tokenizer = AutoTokenizer.from_pretrained(name)
     path = os.path.join(dir, name.replace('/', '_'))
     model.save_pretrained(path)
@@ -20,7 +20,7 @@ def down_save_automodel_for_llm(name, dir):
 
 
 def down_save_automodel_for_seq_classification(name, dir):
-    model = AutoModelForSequenceClassification.from_pretrained(name)
+    model = AutoModelForSequenceClassification.from_pretrained(name, torch_dtype="auto")
     tokenizer = AutoTokenizer.from_pretrained(name)
     path = os.path.join(dir, name.replace('/', '_'))
     model.save_pretrained(path)
