@@ -1,6 +1,3 @@
-import requests
-import pandas as pd
-from langchain.docstore.document import Document
 from src.ingest.retriever import Retriever
 from src.ingest.documents import get_documents
 from src.global_setting import FILE_PATHS, EMBEDDING_PATH, RERANKER_PATH

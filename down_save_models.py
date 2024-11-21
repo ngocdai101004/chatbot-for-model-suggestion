@@ -15,11 +15,11 @@ def down_save_automodel_for_llm(name, dir):
     model = AutoModelForCausalLM.from_pretrained(name, torch_dtype="auto")
     tokenizer = AutoTokenizer.from_pretrained(name)
     path = os.path.join(dir, name.replace('/', '_'))
-    model.save_pretrained(path)
+    model.save_pretrained(path, safe_serialization=True)
     tokenizer.save_pretrained(path)
 
 
-def down_save_automodel_for_seq_classification(name, dir):
+def down_save_automodel_for_seq_reranker(name, dir):
     model = AutoModelForSequenceClassification.from_pretrained(name, torch_dtype="auto")
     tokenizer = AutoTokenizer.from_pretrained(name)
     path = os.path.join(dir, name.replace('/', '_'))
@@ -30,10 +30,8 @@ def down_save_automodel_for_seq_classification(name, dir):
 models_dir = 'src/models'
 embedding_name = "BAAI/bge-m3"
 reranker_name = "BAAI/bge-reranker-base"
-llm_name = "Qwen/Qwen2.5-7B"
-bart_name = "facebook/bart-large-mnli"
-down_save_automodel(name=embedding_name, dir=models_dir)
-down_save_automodel_for_seq_classification(
-    name=reranker_name, dir=models_dir)
-down_save_automodel_for_seq_classification(name=bart_name, dir=models_dir)
+llm_name = "Qwen/Qwen2.5-3B"
+# down_save_automodel(name=embedding_name, dir=models_dir)
+# down_save_automodel_for_seq_reranker(
+#     name=reranker_name, dir=models_dir)
 down_save_automodel_for_llm(name=llm_name, dir=models_dir)
