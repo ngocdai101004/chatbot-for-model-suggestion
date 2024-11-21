@@ -31,7 +31,7 @@ models_dir = 'src/models'
 embedding_name = "BAAI/bge-m3"
 reranker_name = "BAAI/bge-reranker-base"
 llm_name = "Qwen/Qwen2.5-3B"
-# down_save_automodel(name=embedding_name, dir=models_dir)
-# down_save_automodel_for_seq_reranker(
-#     name=reranker_name, dir=models_dir)
+down_save_automodel(name=embedding_name, dir=models_dir)
+down_save_automodel_for_seq_reranker(
+    name=reranker_name, dir=models_dir)
 down_save_automodel_for_llm(name=llm_name, dir=models_dir)

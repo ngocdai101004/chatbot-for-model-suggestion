@@ -147,20 +147,12 @@ class ConversationChain():
         print(label)
         if label == candidate_labels[2]:
             output = self.daily_chain.invoke(query)
-            response = output.split('Answer:')[-1]
-            print(type(response))
-            # response = response.split["---"][0]
         elif label == candidate_labels[0]:
             output = self.rag_chain.invoke({"question": query, "chat_history": history})
-            response = output.split('Answer:')[-1]
-            print(type(response))
         elif label == candidate_labels[-1]:
             output = self.inferium_chain.invoke({"question": query, "chat_history": history})
-            response = output.split('Answer:')[-1]
-            print(type(response))
         else:
             output = self.general_chain.invoke({"question": query, "chat_history": history})
-            response = output.split('Answer:')[-1]
-            print(type(response))
-            # response = response.split["---"][0]
+            
+        response = output.split('Answer:')[-1]
         return response

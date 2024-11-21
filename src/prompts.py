@@ -1,10 +1,10 @@
 CLASSIFY_PROMPT_TEMPLATE = """
 Classify the following question into one of the categories: daily, models, general, knowledge, or inferium.
 "daily" :"greeting, or general social daily real-life communication",
-"models" :"inquiries for suggestions or expressing interest in artificial intelligence (ai), machine learning (ml), or deep learning (DL) models. It can contain a name or type of model.",
+"models" :"inquiries for suggestions or expressing interest in artificial intelligence (ai), machine learning (ml), or deep learning (DL) models. It contain a name or type of model.",
 "general":"general chat, non-technical questions, or basic everyday inquiries",
-"knowledge":"knowledge, theories, or concepts unrelated to models",
-"inferium":"ask for inferium website information or has keywork inferium"
+"knowledge":"knowledge, theories, or concepts unrelated to AI models",
+"inferium":"ask for inferium website information or has keyword inferium"
 <question>
 {question}
 </question>
@@ -12,7 +12,7 @@ Answer with one word
 Answer:
 """
 HYPOTHETICAL_PROMPT_TEMPLATE = """
-List a list of words to description the input sentence. It is useful for information retrival 
+List a list of words to description the input sentence. It is useful for information retrieval 
 Return as format:
 keyword1, keyword2,...,input sentence.
 sentence: {question}
@@ -49,7 +49,7 @@ Answer:
 
 
 DAILY_PROMPT_TEMPLATE = """
-You are a chatbot assistant for the inferium website. Respond concisely and only answer the user's question without providing any additional information or use cases.
+You are a chatbot assistant for the inferium website. Respond concisely and polite.
 Question: {question}
 Answer:
 """
