@@ -1,16 +1,17 @@
 CLASSIFY_PROMPT_TEMPLATE = """
 Classify the following question into one of the categories: daily, models, general, knowledge, or inferium.
-"daily" :"greeting, or general social daily real-life communication",
-"models" :"inquiries for suggestions or expressing interest in artificial intelligence (ai), machine learning (ml), or deep learning (DL) models. It contain a name or type of model.",
-"general":"general chat, non-technical questions, or basic everyday inquiries",
+"daily" :"greeting, or daily real-life communication",
+"models" :"inquiries for suggestions or expressing interest in artificial intelligence (ai), machine learning (ml), or deep learning (DL) models. It contain a name or type of model for example 'BERT', 'GPT-3', 'image classification', 'text generation', etc. Ask for a model's detail, usage, or comparison",
+"general": "general chat, non-technical questions, or basic everyday inquiries",
 "knowledge":"knowledge, theories, or concepts unrelated to AI models",
-"inferium":"ask for inferium website information or has keyword inferium"
+"inferium":" 'inferium' information inquires or has keyword 'inferium'"
 <question>
 {question}
 </question>
 Answer with one word
 Answer:
 """
+
 HYPOTHETICAL_PROMPT_TEMPLATE = """
 List a list of words to description the input sentence. It is useful for information retrieval 
 Return as format:

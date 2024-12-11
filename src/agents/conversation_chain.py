@@ -39,9 +39,10 @@ class ConversationChain():
           device_map=self.device,
           # device=0,
           max_new_tokens=512,
-          top_k=10,
+        #   top_k=10,
           num_return_sequences=1,
-          temperature=0.3)
+        #   temperature=0.3
+          )
 
         self.llm = HuggingFacePipeline(pipeline=pipe)
 
