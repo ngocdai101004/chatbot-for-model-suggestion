@@ -6,18 +6,18 @@ from PyPDF2 import PdfReader
 def format_row(row):
     return (
         f"model name: {row['Name']}; "
-        f"model task: {row['Task']}; "
-        f"specific task: {row['Specific task']}; "
-        f"detail descriontion about model: {row['Description']}; "
+        f"{row['Name']} model task: {row['Task']}; "
+        f"{row['Name']} specific task: {row['Specific task']}; "
+        f"detail descriontion about {row['Name']} model: {row['Description']}; "
         f"this model based on: {str(row['Base Model'])};"
-        f"detail evaluation of models:"
+        f"detail evaluation of {row['Name']} model:"
         f"rating: {row['Stars']} star, "
         f"score: {row['Score']} ;"
         f"number of downloads: {row['Downloads']}; "
-        f"advantanges: {row['Advantage']}; "
-        f"disadvantages: {row['Disadvantage']};"
+        f"advantanges of {row['Name']}: {row['Advantage']}; "
+        f"disadvantages of {row['Name']}: {row['Disadvantage']};"
         f"Experiment result base on metric {row['Metric']}: {row['Result']};"
-        f"Link to the model: {row['Link Inferium']};"
+        # f"Link to the {row['Name']} model: {row['Link Inferium']};"
         # f"In my website inferium, this model get input as {row['Input']} and return output as {row['Output']};"
     ).lower()
 def get_documents_from_cvs(filepaths, format_row):
@@ -30,12 +30,20 @@ def get_documents_from_cvs(filepaths, format_row):
         for row in df.itertuples():
             text = row.formatted_text
             model_name = row.Name
+            model_link = row.Link
             chunks = [text[i:i + chunk_size] for i in range(0, len(text), chunk_size)]
+            
             for idx, chunk in enumerate(chunks):
                 documents.append(Document(
                     page_content=chunk,
                     metadata={"chunk_index": idx, "topic":model_name, "source": filepath + "-" + model_name}
                 ))
+            documents.append (
+              Document(
+                page_content= f"Model name: {model_name}; Link to the {model_name} model: {model_link};",
+                metadata={"chunk_index": len(chunks), "topic":model_name, "source": filepath + "-" + model_name}
+              )
+            )
     return documents
 
 
