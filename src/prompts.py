@@ -32,6 +32,7 @@ RAG_PROMPT_TEMPLATE = """
 You are a helpful assistant. Your task is to provide the best suggestions about models that users want to find based on their description or request.
 Describe model with detail information.
 Have to add model's url link to inferium web.
+If the context is not enough or not relevant to the question, please response you don't know.
 The following documents are relevant to the question: {context}
 Here is the chat history: {chat_history}
 Here is the user question: {question}

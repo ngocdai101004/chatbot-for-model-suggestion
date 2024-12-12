@@ -6,6 +6,7 @@ from PyPDF2 import PdfReader
 def format_row(row):
     return (
         f"model name: {row['Name']}; "
+        f"Link to the {row['Name']} model: {row['Link']};"
         f"{row['Name']} model task: {row['Task']}; "
         f"{row['Name']} specific task: {row['Specific task']}; "
         f"detail descriontion about {row['Name']} model: {row['Description']}; "
@@ -17,12 +18,11 @@ def format_row(row):
         f"advantanges of {row['Name']}: {row['Advantage']}; "
         f"disadvantages of {row['Name']}: {row['Disadvantage']};"
         f"Experiment result base on metric {row['Metric']}: {row['Result']};"
-        # f"Link to the {row['Name']} model: {row['Link Inferium']};"
         # f"In my website inferium, this model get input as {row['Input']} and return output as {row['Output']};"
     ).lower()
 def get_documents_from_cvs(filepaths, format_row):
     documents = []
-    chunk_size = 512
+    chunk_size = 1024
     for filepath in filepaths:
         df = pd.read_csv(filepath)
         df['formatted_text'] = df.apply(format_row, axis=1)
@@ -30,7 +30,6 @@ def get_documents_from_cvs(filepaths, format_row):
         for row in df.itertuples():
             text = row.formatted_text
             model_name = row.Name
-            model_link = row.Link
             chunks = [text[i:i + chunk_size] for i in range(0, len(text), chunk_size)]
             
             for idx, chunk in enumerate(chunks):
@@ -38,12 +37,6 @@ def get_documents_from_cvs(filepaths, format_row):
                     page_content=chunk,
                     metadata={"chunk_index": idx, "topic":model_name, "source": filepath + "-" + model_name}
                 ))
-            documents.append (
-              Document(
-                page_content= f"Model name: {model_name}; Link to the {model_name} model: {model_link};",
-                metadata={"chunk_index": len(chunks), "topic":model_name, "source": filepath + "-" + model_name}
-              )
-            )
     return documents
 
 
