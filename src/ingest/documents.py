@@ -17,7 +17,7 @@ def format_row(row):
         f"number of downloads: {row['Downloads']}; "
         f"advantanges of {row['Name']}: {row['Advantage']}; "
         f"disadvantages of {row['Name']}: {row['Disadvantage']};"
-        f"Experiment result base on metric {row['Metric']}: {row['Result']};"
+        f"Experiment result of {row['Name']} model based on metric {row['Metric']}: {row['Result']};"
         # f"In my website inferium, this model get input as {row['Input']} and return output as {row['Output']};"
     ).lower()
 def get_documents_from_cvs(filepaths, format_row):
