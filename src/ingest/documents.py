@@ -7,6 +7,7 @@ def format_row(row):
     return (
         f"model name: {row['Name']}; "
         f"model task: {row['Task']}; "
+        f"specific task: {row['Specific task']}; "
         f"detail descriontion about model: {row['Description']}; "
         f"this model based on: {str(row['Base Model'])};"
         f"detail evaluation of models:"
@@ -16,6 +17,7 @@ def format_row(row):
         f"advantanges: {row['Advantage']}; "
         f"disadvantages: {row['Disadvantage']};"
         f"Experiment result base on metric {row['Metric']}: {row['Result']};"
+        f"Link to the model: {row['Link Inferium']};"
         # f"In my website inferium, this model get input as {row['Input']} and return output as {row['Output']};"
     ).lower()
 def get_documents_from_cvs(filepaths, format_row):
