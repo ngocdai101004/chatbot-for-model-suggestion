@@ -38,13 +38,13 @@ class ConversationChain():
           torch_dtype="auto",
           device_map=self.device,
           # device=0,
-          max_new_tokens=512,
+          # max_new_tokens=512,
           early_stopping = True,
           # top_k=10,
           num_return_sequences=1,
+          num_beams=5,
           # temperature=0.3
           )
-
         self.llm = HuggingFacePipeline(pipeline=pipe)
 
 
