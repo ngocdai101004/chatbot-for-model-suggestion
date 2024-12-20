@@ -38,12 +38,15 @@ class ConversationChain():
           torch_dtype="auto",
           device_map=self.device,
           # device=0,
-          # max_new_tokens=512,
+          max_new_tokens=512,
           early_stopping = True,
-          # top_k=10,
+          do_sample=False,
           num_return_sequences=1,
-          num_beams=5,
-          # temperature=0.3
+          pad_token_id=tokenizer.eos_token_id,
+          eos_token_id=tokenizer.eos_token_id,
+          length_penalty=1.2,
+          repeat_penalty=1.2,
+          return_full_text=False,
           )
         self.llm = HuggingFacePipeline(pipeline=pipe)
 
@@ -137,8 +140,14 @@ class ConversationChain():
     def chat(self, message):
         query = message['question'].lower()
         chat_history = message['chat_history']
-        chat_history = chat_history[len(chat_history)-2:len(chat_history)] if len(chat_history) > 2 else chat_history
-        history = self.format_chat_history(chat_history).lower()
+
+        if chat_history is None:
+            chat_history = ""
+        else:
+            if isinstance(chat_history, str):
+                chat_history = chat_history.lower()
+            else:
+                history = self.format_chat_history(chat_history).lower()
         if query == 'exit':
             print('Exiting')
             return 'Exiting'
@@ -156,5 +165,6 @@ class ConversationChain():
         else:
             output = self.general_chain.invoke({"question": query, "chat_history": history})
             
-        response = output.split('Answer:')[-1]
+        # response = output.split('Answer:')[-1]
+        response = output
         return response
