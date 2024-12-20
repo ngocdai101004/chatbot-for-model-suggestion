@@ -5,6 +5,7 @@ from langchain_core.output_parsers.string import StrOutputParser
 from operator import itemgetter
 from langchain_huggingface.llms import HuggingFacePipeline
 from src.prompts import CANDIDATE_LABELS
+import re
 
 
 class ConversationChain():
@@ -45,7 +46,7 @@ class ConversationChain():
           pad_token_id=tokenizer.eos_token_id,
           eos_token_id=tokenizer.eos_token_id,
           length_penalty=1.2,
-          repeat_penalty=1.2,
+          num_beams = 2,
           return_full_text=False,
           )
         self.llm = HuggingFacePipeline(pipeline=pipe)
@@ -134,9 +135,15 @@ class ConversationChain():
         if chat_history is None or len(chat_history) == 0:
             return ""
         else:
-            return "\n".join([f"Question: {record['question']}\nAnswer: {record['answer']}\n" for record in chat_history])
+            return "\n".join([f"Question: {chat_history[idx]['question']}\nAnswer: {chat_history[idx]['answer']}\n" for idx in range(len(chat_history) - 1, -1, -1)])
 
 
+    def process_response(self, conversation):
+        conversation = conversation.split('Answer:')[0]
+        conversation = conversation.split('Question:')[0]
+        conversation = conversation.strip()
+        return conversation
+    
     def chat(self, message):
         query = message['question'].lower()
         chat_history = message['chat_history']
@@ -165,6 +172,5 @@ class ConversationChain():
         else:
             output = self.general_chain.invoke({"question": query, "chat_history": history})
             
-        # response = output.split('Answer:')[-1]
-        response = output
+        response = self.process_response(output)
         return response
