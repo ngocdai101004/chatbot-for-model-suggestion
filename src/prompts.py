@@ -37,7 +37,7 @@ Chat history:
 {chat_history}
 Question: {question}
 If model is not contained in context, response there is not suitable model in our system and suggest other methods.
-Describe model with detail information from context: name, evaluation, advantage and disadvantage and add model's url link to it on inferium.io web.
+Describe model with detail information from context: name, link, evaluation, advantage and disadvantage.
 Answer:
 """
 
