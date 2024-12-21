@@ -39,13 +39,13 @@ class ConversationChain():
           torch_dtype="auto",
           device_map=self.device,
           # device=0,
-          max_new_tokens=512,
+          # max_new_tokens=512,
           early_stopping = True,
           do_sample=False,
           num_return_sequences=1,
           pad_token_id=tokenizer.eos_token_id,
           eos_token_id=tokenizer.eos_token_id,
-          length_penalty=1.2,
+          # length_penalty=1.2,
           num_beams = 2,
           return_full_text=False,
           )
@@ -98,7 +98,7 @@ class ConversationChain():
                   context = itemgetter ('question')| compression_retriever | format_docs,
                   chat_history = itemgetter ('chat_history') ,
                   question = itemgetter ('question'))
-            | rag_prompt
+            | inferium_prompt
             | self.llm
             | StrOutputParser()
         )
@@ -141,7 +141,38 @@ class ConversationChain():
     def process_response(self, conversation):
         conversation = conversation.split('Answer:')[0]
         conversation = conversation.split('Question:')[0]
+        conversation = conversation.split('Chat history:')[0]
+        conversation = conversation.split('chat history:')[0]
+        conversation = conversation.split('Context:')[0]
+        conversation = conversation.split('context:')[0]
+
+        from difflib import SequenceMatcher
+        def calculate_similarity(a, b):
+            return SequenceMatcher(None, a.lower(), b.lower()).ratio()
+
+        def remove_duplicates(text, similarity_threshold=0.8):
+            paragraphs = text.split('\n\n')
+            
+            unique_paragraphs = []
+            
+            for current_para in paragraphs:
+                current_para = current_para.strip()
+                is_duplicate = False
+                
+                for existing_para in unique_paragraphs:
+                    similarity = calculate_similarity(current_para, existing_para)
+                    
+                    if similarity > similarity_threshold:
+                        is_duplicate = True
+                        break
+                
+                if not is_duplicate and current_para:
+                    unique_paragraphs.append(current_para)
+            
+            return '\n\n'.join(unique_paragraphs)
+
         conversation = conversation.strip()
+        conversation = remove_duplicates(conversation)
         return conversation
     
     def chat(self, message):
@@ -154,6 +185,7 @@ class ConversationChain():
             if isinstance(chat_history, str):
                 chat_history = chat_history.lower()
             else:
+                chat_history = [chat_history[idx] for idx in range(len(chat_history) - 1, -1, -1) if idx < 1]
                 history = self.format_chat_history(chat_history).lower()
         if query == 'exit':
             print('Exiting')
@@ -171,6 +203,6 @@ class ConversationChain():
             output = self.inferium_chain.invoke({"question": query, "chat_history": history})
         else:
             output = self.general_chain.invoke({"question": query, "chat_history": history})
-            
         response = self.process_response(output)
+
         return response

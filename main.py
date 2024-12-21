@@ -56,16 +56,17 @@ def get_chain():
 # Example
 if __name__ == '__main__':
     conversation_chain = get_chain()
+    chat_history = [
+        {
+            'question': 'Hello',
+            'answer': 'Hello, What can I help you'
+        }
+    ]
     while True:
         query = input ("Enter your query (enter 'exit' to exit): ")
         if (query == 'exit'):
             break 
-        chat_history = [
-            {
-                'question': 'Hello',
-                'answer': 'Hello, What can I help you'
-            }
-        ]
+
         message = {
             'question': query,
             'chat_history': chat_history
